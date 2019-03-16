@@ -1,0 +1,13 @@
+Michelle:	Mr Hibberd’s office!
+Peter:	Hello, can I speak to Brian Hibberd, please?
+Michelle:	I’m afraid he’s in a meeting until lunchtime. Can I take a message?
+Peter:	Well, I’d like to arrange an appointment to see him, please.   It’s Peter Jefferson here.
+Michelle:	Could you hold on for a minute, Mr Jefferson. I’ll just look in the diary. So when’s convenient for you?
+Peter:	Some time next week if possible. I gather he’s away the following week.
+Michelle:	Yes, that’s right, he’s on holiday for a fortnight.
+Peter:	Well, I need to see him before he goes away. So would next Wednesday be okay?
+Michelle:	Wednesday . let me see . he's out of the office all morning. But he's free in the afternoon, after about three.
+Peter:	Three o'clock is difficult. But I could make it after four.
+Michelle:	So shall we say 4.15 next Wednesday, in Mr Hibberd's office?
+Peter:	Yes, that sounds fine. Thanks very much.
+Michelle:	Okay, then. Bye.
