@@ -20,11 +20,11 @@ import re
 import heapq
 import json
 
-f = open('convotext.txt', 'r').read().lower()
+f = open('convotext.txt', 'r',errors='ignore').read().lower()
 
     #     f = re.sub(r'\s+', ' ', f)
-    no_of_lines = len(open('convotext.txt', 'r').readlines())
-    stop_words = set(stopwords.words('english'))
+no_of_lines = len(open('convotext.txt', 'r',errors='ignore').readlines())
+stop_words = set(stopwords.words('english'))
 
 # ! cd "/gdrive/My Drive/Colab_ML/Abstractive Summarizer" && wget "https://conceptnet.s3.amazonaws.com/downloads/2017/numberbatch/numberbatch-en-17.06.txt.gz"
 # ! cd "/gdrive/My Drive/Colab_ML/Abstractive Summarizer/" && gunzip "/gdrive/My Drive/Colab_ML/Abstractive Summarizer/numberbatch-en-17.06.txt.gz"
