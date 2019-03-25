@@ -80,10 +80,6 @@ def sent_score_calc(text, word_frequencies):
                     sentence_scores[sent] += word_frequencies[word]
     return sentence_scores
 
-'''
-THIS ARE THE MAIN FUCNTIONS TO RETURN- RETURNS IN JSON
-CALL THE FUNCTION ON THE DOCU VARIABLE WHICH TAKES A TEXT FILE.
-'''
 def extractive_summary(docu):
     max_freq = weighted_freq(docu)
     sent_scores = sent_score_calc(f, max_freq)
@@ -94,7 +90,7 @@ def extractive_summary(docu):
 
     summary = ' '.join(summary_sentences)
     # print(summary)
-    return json.dumps({"0":summary})
+    return summary
 
 def return_context(docu):
     doc = nlp(docu)

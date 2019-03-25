@@ -42,9 +42,8 @@ def clean_text():
 
 
 
-def main():
+def main(txt):
     txt = clean_text()
     wc = count_words(txt)
 
 
-main()
