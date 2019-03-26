@@ -15,8 +15,9 @@ def form_example():
 @app.route('/summary', methods=['POST'])
 def summary():
         nlp = en_core_web_sm.load()
-        docu = preprocess(request.json['data'])
-        summ = extractive_summary(docu)
+        data = request.json['data']
+        docu = preprocess(data)
+        summ = extractive_summary(data,docu)
         return jsonify({"summary":summ})
 
         

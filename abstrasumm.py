@@ -32,7 +32,7 @@ stop_words = set(stopwords.words('english'))
 
 def remove_punc(sent):
     #
-    punctuations = '''!()-[]{};'"\,<>./?@#%^&*_~'''
+    punctuations = '''!()-[]{};'"\,<>/?@#%^&*_~'''
     for x in sent:
         if x in punctuations:
             sent = sent.replace(x, "")
@@ -80,10 +80,10 @@ def sent_score_calc(text, word_frequencies):
                     sentence_scores[sent] += word_frequencies[word]
     return sentence_scores
 
-def extractive_summary(docu):
+def extractive_summary(f,docu):
     max_freq = weighted_freq(docu)
     sent_scores = sent_score_calc(f, max_freq)
-    print(no_of_lines)
+    no_of_lines = len(docu.split('.'))
     summary_sentences = heapq.nlargest(
         int(no_of_lines / 2), sent_scores, key=sent_scores.get)
     # summary_sentences =sorted(sent_scores, key=sent_scores.get, reverse=True)[:int(no_of_lines/2)]
