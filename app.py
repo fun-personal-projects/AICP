@@ -9,18 +9,20 @@ from abstrasumm import preprocess,extractive_summary
 app = Flask(__name__)
 @app.route('/context', methods=['POST'])
 def form_example():
-        searchresult = main(request.json['data'])
-        print(searchresult)
-   	return jsonify({"data":searchresult})
+	searchresult = main(request.json['data'])
+	print(searchresult)
+	return jsonify({"data":searchresult})
 @app.route('/summary', methods=['POST'])
-def summary():
-        nlp = en_core_web_sm.load()
-        data = request.json['data']
-        docu = preprocess(data)
-        summ = extractive_summary(data,docu)
-        return jsonify({"summary":summ})
 
-        
+def summary():
+	nlp = en_core_web_sm.load()
+	data = request.json['data']
+	docu = preprocess(data)
+	summ = extractive_summary(data,docu)
+
+	return jsonify({"summary":summ})
+
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+	app.run(host='0.0.0.0')

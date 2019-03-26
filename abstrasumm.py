@@ -19,13 +19,19 @@ import tensorflow as tf
 import re
 import heapq
 import json
+from collections import Counter
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 
-f = open('convotext.txt', 'r',errors='ignore').read().lower()
+f = open('convotext.txt', 'r', errors='ignore').read().lower()
 
-    #     f = re.sub(r'\s+', ' ', f)
-no_of_lines = len(open('convotext.txt', 'r',errors='ignore').readlines())
-stop_words = set(stopwords.words('english'))
+#     f = re.sub(r'\s+', ' ', f)
+no_of_lines = len(open('convotext.txt', 'r', errors='ignore').readlines())
+stop_words = set(
+    stopwords.words('english') +
+    ['i', 'he', 'me', 'she', 'it', 'them', 'her', 'him'])
 
+# print(stop_words)
 # ! cd "/gdrive/My Drive/Colab_ML/Abstractive Summarizer" && wget "https://conceptnet.s3.amazonaws.com/downloads/2017/numberbatch/numberbatch-en-17.06.txt.gz"
 # ! cd "/gdrive/My Drive/Colab_ML/Abstractive Summarizer/" && gunzip "/gdrive/My Drive/Colab_ML/Abstractive Summarizer/numberbatch-en-17.06.txt.gz"
 
@@ -46,9 +52,11 @@ def preprocess(sent):
     lemmatizer = WordNetLemmatizer()
     sent = [lemmatizer.lemmatize(x) for x in sent]
     sent = ' '.join(sent)
-    filtered_sentence = [w for w in sent.split(' ') if not w in stop_words]
+    filtered_sentence = [
+        w for w in sent.split(' ') if not w.lower() in stop_words
+    ]
 
-    return ' '.join(filtered_sentence)
+    return ' '.join(filtered_sentence).lower()
 
 
 def weighted_freq(sent):
@@ -80,7 +88,8 @@ def sent_score_calc(text, word_frequencies):
                     sentence_scores[sent] += word_frequencies[word]
     return sentence_scores
 
-def extractive_summary(f,docu):
+
+def extractive_summary(f, docu):
     max_freq = weighted_freq(docu)
     sent_scores = sent_score_calc(f, max_freq)
     no_of_lines = len(docu.split('.'))
@@ -92,17 +101,92 @@ def extractive_summary(f,docu):
     # print(summary)
     return summary
 
+
 def return_context(docu):
     doc = nlp(docu)
     fin_dic = {}
     for ent in doc.ents:
-        fin_dic[ent.text]=ent.label_
-    return json.dumps(fin_dic,sort_keys=True)
+        fin_dic[ent.text] = ent.label_
+    return json.dumps(fin_dic, sort_keys=True)
 
 
+# pass a list with multiple conversations in this function. pls pass as a list pls pls
+def trends(js):
+    lis_trend = []
+    for each in js:
+        each = preprocess(each)
+        lis_trend.extend(each.split(' '))
 
-nlp = en_core_web_sm.load()
-docu = preprocess(f)
+    dict_trend = Counter(lis_trend)
+    dict_trend['.'] = 0
 
-# return_context(docu)
-extractive_summary(docu)
+    wordcloud = WordCloud(
+        width=500,
+        height=500,
+        background_color='white',
+        stopwords=stop_words,
+        min_font_size=7).generate(' '.join(list(set(lis_trend))))
+    plt.figure(figsize=(8, 8), facecolor=None)
+    plt.imshow(wordcloud,interpolation="bilinear")
+    plt.show()
+    plt.axis('off')
+    plt.savefig('trends.png')
+
+    return dict_trend.most_common(5)
+
+
+# l = [
+#     '''
+# Good morning! Madam.
+
+# Good morning. Sit down. What do you want?
+
+# I want admission into Sixth Standard.
+
+# Where did you study last year?
+
+# I studied in Tirumangalam.
+
+# Then why do you want admission here?
+
+#  My father has been transferred to Madurai Branch.
+
+# What is your father?
+
+# He is a Bank Officer.
+
+# Where is he?
+
+# He is seated there. Shall I call him?
+
+# Fill in this application form and come in the afternoon.
+# ''', '''
+# Good morning both of you. He is my friend Suresh.
+
+# Good morning. Who is he?
+
+# He is Rahul.
+
+# Good Morning Suresh.
+
+# Where are you studying Rahul?
+
+# I am studying in St. Mary's High School.
+
+# Do you come to school by cycle?
+
+# No. I come to school on foot. What about you Suresh?
+
+# I attend the school by bus.
+
+# Do you like to witness cricket match?
+
+# I am interested in watching one day matches.
+
+# Very fine. We shall go to Racecourse grounds to watch one-day match.
+
+# '''
+# ]
+
+# trends(l)
+
