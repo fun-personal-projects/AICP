@@ -10,7 +10,8 @@ from abstrasumm import preprocess,extractive_summary,return_context,trends
 app = Flask(__name__)
 @app.route('/context', methods=['POST'])
 def form_example():
-	searchresult = return_context(request.json['data'])
+	searchresult = context_json(request.json['data'])
+    # this now gives a json
 	print(searchresult)
 	return searchresult
 
@@ -27,8 +28,11 @@ def summary():
 def findimage():
 	trends(request.json['data'])
 	return send_file('trends.png')
-		
-	
+
+
+
+
+
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')

@@ -25,6 +25,8 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
+import re
+import random
 
 f = open('convotext.txt', 'r').read().lower()
 
@@ -140,58 +142,69 @@ def trends(js):
     return dict_trend.most_common(5)
 
 
-# l = [
-#     '''
-# Good morning! Madam.
+def new_train_gen():
+    # l = ['my no is 9003401119','is your phone 9341234441','your phone no is 8341934568','here is my no 8261348649','here is my no 6713401897']
+    l = [
+    "my email is ~msubhaditya@gmail.com",
+"is your email id ~rules@yahoo.com",
+"your email is ~aditya@rediff.com",
+"here is email ~bce@mail.com",
+"here is email id ~hello@find.in"]
+    s = ''
+    for a in l:
+        s+="[({},{},'EMAIL')]\n".format(re.search(r'~',a).start()+1,len(a))
+    print(s)
 
-# Good morning. Sit down. What do you want?
+# new_train_gen()
 
-# I want admission into Sixth Standard.
 
-# Where did you study last year?
+def new_sp_model():
+    TRAIN_DATA = [
+    (u"my no is 9003401119",{"entities":[(9,19,"PHONE")]}),
+(u"is your phone 9341234441",{"entities":[(14,24,"PHONE")]}),
+(u"your phone number is 8341934568",{"entities":[(17,27,"PHONE")]}),
+(u"here is my no 8261348649",{"entities":[(14,24,"PHONE")]}),
+(u"here is my number 6713401897",{"entities":[(14,24,"PHONE")]}),
+(u"my email is msubhaditya@gmail.com",{"entities":[(12,34,"EMAIL")]}),
+(u"is your email id rules@yahoo.com",{"entities":[(17,33,"EMAIL")]}),
+(u"your email is aditya@rediff.com",{"entities":[(14,32,"EMAIL")]}),
+(u"here is email bce@mail.com",{"entities":[(14,27,"EMAIL")]}),
+(u"here my email id hello@find.in",{"entities":[(17,31,"EMAIL")]})
+    ]
+    nlp = spacy.blank('en')
+    # optimizer = nlp.begin_training()
+    # for i in range(20):
+    #     random.shuffle(TRAIN_DATA)
+    #     for text, annotations in TRAIN_DATA:
+    #         nlp.update([text], [annotations], sgd=optimizer)
 
-# I studied in Tirumangalam.
+    batches = spacy.util.minibatch(TRAIN_DATA)
+    for batch in batches:
+        texts, annotations = zip(*batch)
+        nlp.update(texts, annotations)
+    nlp.to_disk("newmod")
 
-# Then why do you want admission here?
+# new_sp_model()
 
-#  My father has been transferred to Madurai Branch.
 
-# What is your father?
+# final context returns for csv
+def context_json(p):
+    dic = json.loads(return_context(p))
+    d_final = {'persons':[],'phone':[],'emails':[],'date':[]}
+    d_final['phone'].extend(re.findall(r'\d{10}',p))
+    d_final['emails'].extend(re.findall(r'\S+@\S+',p))
 
-# He is a Bank Officer.
+    for a in dic:
+        if dic[a]=='PERSON':
+            d_final['persons'].append(a)
+        if dic[a]=='DATE':
+            d_final['date'].append(a)
+    # print(json.dumps(d_final))
+    return json.dumps(d_final)
 
-# Where is he?
 
-# He is seated there. Shall I call him?
 
-# Fill in this application form and come in the afternoon.
-# ''', '''
-# Good morning both of you. He is my friend Suresh.
 
-# Good morning. Who is he?
 
-# He is Rahul.
-
-# Good Morning Suresh.
-
-# Where are you studying Rahul?
-
-# I am studying in St. Mary's High School.
-
-# Do you come to school by cycle?
-
-# No. I come to school on foot. What about you Suresh?
-
-# I attend the school by bus.
-
-# Do you like to witness cricket match?
-
-# I am interested in watching one day matches.
-
-# Very fine. We shall go to Racecourse grounds to watch one-day match.
-
-# '''
-# ]
-
-# trends(l)
-
+# with open('convotext.txt') as f:
+#     context_json(f.read())

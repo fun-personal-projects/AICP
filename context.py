@@ -8,7 +8,7 @@ import time
 from tensorflow.python.layers.core import Dense
 from tensorflow.python.ops.rnn_cell_impl import _zero_state_tensors
 import nltk
-from nltk.stem import WordNetLemmatizer 
+from nltk.stem import WordNetLemmatizer
 nltk.download('stopwords')
 
 def count_words(text):
@@ -43,7 +43,6 @@ def clean_text(text):
 
 
 def main(txt):
-    text = clean_text(txt) 
+    text = clean_text(txt)
     wc = count_words(text)
     return wc
-
