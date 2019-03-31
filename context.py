@@ -9,7 +9,7 @@ from tensorflow.python.layers.core import Dense
 from tensorflow.python.ops.rnn_cell_impl import _zero_state_tensors
 import nltk
 from nltk.stem import WordNetLemmatizer 
-# nltk.download('stopwords')
+nltk.download('stopwords')
 
 def count_words(text):
     count_dict = {}
@@ -19,11 +19,11 @@ def count_words(text):
         else:
             count_dict[word] += 1
     print(count_dict)
+    return count_dict
 
-def clean_text():
+def clean_text(text):
     lemmatizer = WordNetLemmatizer()
     contractions = json.load(open('contractions.json','r'))
-    text = open('convotext.txt','r').read().lower()
     if True:
         text = text.split()
         new_text = []
@@ -43,7 +43,7 @@ def clean_text():
 
 
 def main(txt):
-    txt = clean_text()
-    wc = count_words(txt)
-
+    text = clean_text(txt) 
+    wc = count_words(text)
+    return wc
 

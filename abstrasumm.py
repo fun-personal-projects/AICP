@@ -1,10 +1,11 @@
+
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
-# nltk.download('stopwords')
-# nltk.download('wordnet')
-# nltk.download('punkt')
-# nltk.download('averaged_perceptron_tagger')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 from nltk.chunk import conlltags2tree, tree2conlltags
 from pprint import pprint
 from nltk import ne_chunk
@@ -20,13 +21,15 @@ import re
 import heapq
 import json
 from collections import Counter
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 
-f = open('convotext.txt', 'r', errors='ignore').read().lower()
+f = open('convotext.txt', 'r').read().lower()
 
 #     f = re.sub(r'\s+', ' ', f)
-no_of_lines = len(open('convotext.txt', 'r', errors='ignore').readlines())
+no_of_lines = len(open('convotext.txt', 'r').readlines())
 stop_words = set(
     stopwords.words('english') +
     ['i', 'he', 'me', 'she', 'it', 'them', 'her', 'him'])
@@ -103,6 +106,7 @@ def extractive_summary(f, docu):
 
 
 def return_context(docu):
+    nlp = en_core_web_sm.load()
     doc = nlp(docu)
     fin_dic = {}
     for ent in doc.ents:
@@ -112,6 +116,7 @@ def return_context(docu):
 
 # pass a list with multiple conversations in this function. pls pass as a list pls pls
 def trends(js):
+    js = js.split('.')
     lis_trend = []
     for each in js:
         each = preprocess(each)
