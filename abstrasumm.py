@@ -277,6 +277,5 @@ def calendar_entry():
 
     }
     event = service.events().insert(calendarId='primary', body=event).execute()
-# with open('convotext.txt') as f:
-#     context_json(f.read())
+
 calendar_entry()
