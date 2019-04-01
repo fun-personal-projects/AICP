@@ -33,6 +33,16 @@ import pandas as pd
 
 from wordcloud import WordCloud
 
+import os.path
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+import pickle
+import datetime
+
+SCOPES = ['https://www.googleapis.com/auth/calendar_entry']
+
+
 f = open('convotext.txt', 'r').read().lower()
 
 #     f = re.sub(r'\s+', ' ', f)
@@ -230,5 +240,43 @@ def context_json(p):
     return json.dumps(d_final)
 
 
-with open('convotext.txt') as f:
-    context_json(f.read())
+def calendar_entry():
+    creds = None
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server()
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+
+    service = build('calendar', 'v3', credentials=creds)
+
+    with open('output.csv','r') as f:
+        p = f.readlines()[1].split(',')
+        ev = p[-1].strip()
+        su = p[1].strip()
+        # print(ev)
+        evp = datetime.datetime.strptime(ev, '%d %B %Y')
+        ev = str(evp).split(' ')[0]+'T09:00:00-07:00'
+        ev2 =str(evp).split(' ')[0]+'T19:00:00-07:00'
+        # print(ev)
+    event = {
+    'summary': 'Added from AECP: {}'.format(su),
+    'start':{
+        'dateTime':str(ev),
+    },
+    'end':{
+        'dateTime':str(ev2),
+    },
+
+    }
+    event = service.events().insert(calendarId='primary', body=event).execute()
+# with open('convotext.txt') as f:
+#     context_json(f.read())
+calendar_entry()
