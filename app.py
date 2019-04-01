@@ -4,7 +4,7 @@ from flask import jsonify
 from flask import send_file
 from context import main
 import en_core_web_sm
-from abstrasumm import preprocess,extractive_summary,return_context,trends
+from abstrasumm import preprocess,extractive_summary,return_context,trends,calendar_entry
 
 
 app = Flask(__name__)
@@ -12,7 +12,9 @@ app = Flask(__name__)
 def form_example():
 	searchresult = context_json(request.json['data'])
     # this now gives a json
-	print(searchresult)
+	# print(searchresult)
+    calendar_entry()
+
 	return searchresult
 
 @app.route('/summary', methods=['POST'])
