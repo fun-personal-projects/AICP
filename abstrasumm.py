@@ -278,4 +278,4 @@ def calendar_entry():
     }
     event = service.events().insert(calendarId='primary', body=event).execute()
 
-calendar_entry()
+# calendar_entry()

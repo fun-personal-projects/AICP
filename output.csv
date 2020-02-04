@@ -1,12 +1,10 @@
 ,persons,phone,emails,date
-0,Ann,9003401119,msubhaditya@gmail.com,10 June 2019
-1,Ann Maybe,,,Tuesday 10pm
-2,Ann Nice,,,every year
-3,Linda,,,last month
-4,Mark,,,next month
-5,Mark Johnson,,,next year
-6,O.K.,,,this year
-7,O.K. Third,,,today
-8,Susan,,,tomorrow
-9,Tom,,,
-10,’m,,,
+0,ann,9003401119,msubhaditya@gmail.com,10 june 2019
+1,ann nice,,,every year
+2,linda,,,last month
+3,mark,,,next month
+4,mark johnson,,,next year
+5,susan,,,this year
+6,tom,,,today
+7,,,,tomorrow
+8,,,,tuesday 10pm
